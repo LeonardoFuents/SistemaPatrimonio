@@ -1,8 +1,8 @@
-﻿using SistemaPatrimonio.Contexts;
-using SistemaPatrimonio.Domains;
-using SistemaPatrimonio.Interfaces;
+﻿using GestaoPatrimonios.Contexts;
+using GestaoPatrimonios.Domains;
+using GestaoPatrimonios.Interfaces;
 
-namespace SistemaPatrimonio.Repositories
+namespace GestaoPatrimonios.Repositories
 {
     public class LocalizacaoRepository : ILocalizacaoRepository
     {
@@ -15,8 +15,8 @@ namespace SistemaPatrimonio.Repositories
 
         public List<Localizacao> Listar()
         {
-            return _context.Localizacao.OrderBy(localizacao => localizacao.NomeLocal).ToList();
-
+            return _context.Localizacao
+                .OrderBy(localizacao =>  localizacao.NomeLocal).ToList();
         }
 
         public Localizacao BuscarPorId(Guid localizacaoId)
@@ -44,9 +44,9 @@ namespace SistemaPatrimonio.Repositories
 
             Localizacao localizacaoBanco = _context.Localizacao.Find(localizacao.LocalizacaoID);
 
-            if(localizacaoBanco != null)
+            if(localizacaoBanco == null)
             {
-                return ;
+                return;
             }
 
             localizacaoBanco.NomeLocal = localizacao.NomeLocal;
@@ -56,6 +56,12 @@ namespace SistemaPatrimonio.Repositories
 
             _context.SaveChanges();
         }
+
+        public Localizacao BuscarPorNome(string nomeLocal, Guid areaId)
+        {
+
+            return _context.Localizacao.FirstOrDefault(local => local.NomeLocal.ToLower() == nomeLocal.ToLower() && local.AreaID == areaId
+            );
+        }
     }
 }
-

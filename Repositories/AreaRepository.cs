@@ -1,13 +1,13 @@
-﻿using SistemaPatrimonio.Contexts;
-using SistemaPatrimonio.Domains;
-using SistemaPatrimonio.Interfaces;
+﻿using GestaoPatrimonios.Contexts;
+using GestaoPatrimonios.Domains;
+using GestaoPatrimonios.Interfaces;
 
-namespace SistemaPatrimonio.Repositories
+namespace GestaoPatrimonios.Repositories
 {
     public class AreaRepository : IAreaRepository
     {
         private readonly GestaoPatrimoniosContext _context;
-        
+
         public AreaRepository(GestaoPatrimoniosContext context)
         {
             _context = context;
@@ -15,7 +15,7 @@ namespace SistemaPatrimonio.Repositories
 
         public List<Area> Listar()
         {
-            return _context.Area.OrderBy(area =>  area.NomeArea).ToList();
+            return _context.Area.OrderBy(area => area.NomeArea).ToList();
         }
 
         public Area BuscarPorId(Guid areaId)
@@ -28,13 +28,13 @@ namespace SistemaPatrimonio.Repositories
             return _context.Area.FirstOrDefault(area => area.NomeArea.ToLower() == nomeArea.ToLower());
         }
 
-        public void Adicionar (Area area)
+        public void Adicionar(Area area)
         {
             _context.Area.Add(area);
             _context.SaveChanges();
         }
 
-        public void Atualizar (Area area)
+        public void Atualizar(Area area)
         {
             if(area == null)
             {
@@ -42,6 +42,11 @@ namespace SistemaPatrimonio.Repositories
             }
 
             Area areaBanco = _context.Area.Find(area.AreaID);
+
+            if (area == null)
+            {
+                return;
+            }
 
             areaBanco.NomeArea = area.NomeArea;
             _context.SaveChanges();

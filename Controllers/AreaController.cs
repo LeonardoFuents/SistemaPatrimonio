@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using GestaoPatrimonios.Applications.Services;
+using GestaoPatrimonios.DTOs.AreaDto;
+using GestaoPatrimonios.Exceptions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SistemaPatrimonio.Applications.Services;
-using SistemaPatrimonio.DTOs.AreaDto;
-using SistemaPatrimonio.Exceptions;
 
-namespace SistemaPatrimonio.Controllers
+namespace GestaoPatrimonios.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -26,7 +26,6 @@ namespace SistemaPatrimonio.Controllers
         }
 
         [HttpGet("{id}")]
-
         public ActionResult<ListarAreaDto> BuscarPorId(Guid id)
         {
             try
@@ -42,7 +41,6 @@ namespace SistemaPatrimonio.Controllers
         }
 
         [HttpPost]
-
         public ActionResult Adicionar(CriarAreaDto dto)
         {
             try
@@ -69,6 +67,5 @@ namespace SistemaPatrimonio.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
     }
 }

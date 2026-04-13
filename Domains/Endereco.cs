@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SistemaPatrimonio.Domains;
+namespace GestaoPatrimonios.Domains;
 
 public partial class Endereco
 {

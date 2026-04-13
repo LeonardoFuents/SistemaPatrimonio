@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using GestaoPatrimonios.Applications.Services;
+using GestaoPatrimonios.DTOs.LocalizacaoDto;
+using GestaoPatrimonios.Exceptions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SistemaPatrimonio.Applications.Services;
-using SistemaPatrimonio.DTOs.LocalizacaoDto;
-using SistemaPatrimonio.Exceptions;
 
-namespace SistemaPatrimonio.Controllers
+namespace GestaoPatrimonios.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -32,12 +32,17 @@ namespace SistemaPatrimonio.Controllers
                 ListarLocalizacaoDto localizacao = _service.BuscarPorId(id);
                 return Ok(localizacao);
             }
-            catch (Exception ex)
+            catch (DomainException ex)
             {
                 return NotFound(ex.Message);
             }
         }
 
+
+
+        /// <summary>
+        /// Mensagem
+        /// </summary>
         [HttpPost]
         public ActionResult Adicionar(CriarLocalizacaoDto dto)
         {
@@ -46,14 +51,13 @@ namespace SistemaPatrimonio.Controllers
                 _service.Adicionar(dto);
                 return Created();
             }
-            catch (DomainException ex)
-            {
-                return BadRequest(ex.Message);
+            catch (DomainException ex) {
+                 return BadRequest(ex.Message);
             }
         }
 
         [HttpPut("{id}")]
-        public ActionResult Atualizar(Guid id , CriarLocalizacaoDto dto)
+        public ActionResult Atualizar(Guid id, CriarLocalizacaoDto dto)
         {
             try
             {

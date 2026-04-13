@@ -1,15 +1,16 @@
-﻿using SistemaPatrimonio.Applications.Regras;
-using SistemaPatrimonio.Domains;
-using SistemaPatrimonio.DTOs.AreaDto;
-using SistemaPatrimonio.Exceptions;
-using SistemaPatrimonio.Interfaces;
+﻿using GestaoPatrimonios.Applications.Regras;
+using GestaoPatrimonios.Domains;
+using GestaoPatrimonios.DTOs.AreaDto;
+using GestaoPatrimonios.Exceptions;
+using GestaoPatrimonios.Interfaces;
+using System.Collections.Immutable;
 
-namespace SistemaPatrimonio.Applications.Services
+namespace GestaoPatrimonios.Applications.Services
 {
     public class AreaService
     {
         private readonly IAreaRepository _repository;
-        
+
         public AreaService(IAreaRepository repository)
         {
             _repository = repository;
@@ -21,7 +22,7 @@ namespace SistemaPatrimonio.Applications.Services
 
             List<ListarAreaDto> areasDto = areas.Select(area => new ListarAreaDto
             {
-                AreaId = area.AreaID,
+                AreaID = area.AreaID,
                 NomeArea = area.NomeArea
             }).ToList();
 
@@ -34,12 +35,12 @@ namespace SistemaPatrimonio.Applications.Services
 
             if(area == null)
             {
-                throw new DomainException("Área não encontrada.");
+                throw new DomainException("Área não encontrada");
             }
 
             ListarAreaDto areaDto = new ListarAreaDto
             {
-                AreaId = area.AreaID,
+                AreaID = area.AreaID,
                 NomeArea = area.NomeArea
             };
 
@@ -52,41 +53,42 @@ namespace SistemaPatrimonio.Applications.Services
 
             Area areaExistente = _repository.BuscarPorNome(dto.NomeArea);
 
-            if( areaExistente != null)
+            if(areaExistente != null)
             {
-                throw new DomainException("Já existe uma área com este nome cadastrada.");
+                throw new DomainException("Já existe uma área cadastrada com esse nome.");
             }
 
             Area area = new Area
             {
+                // AreaID = Guid.NewGuid(),
                 NomeArea = dto.NomeArea
             };
 
             _repository.Adicionar(area);
         }
 
-        public void Atualizar(Guid areaId, CriarAreaDto dto)
+        public void Atualizar(Guid areaId ,CriarAreaDto dto)
         {
             Validar.ValidarNome(dto.NomeArea);
 
             Area areaBanco = _repository.BuscarPorId(areaId);
 
-            if( areaBanco == null)
+            if(areaBanco == null)
             {
                 throw new DomainException("Área não encontrada.");
-
             }
 
             Area areaExistente = _repository.BuscarPorNome(dto.NomeArea);
 
-            if( areaExistente != null)
+            if (areaExistente != null)
             {
-                throw new DomainException("Já existe uma área cadastrada com este nome.");
+                throw new DomainException("Já existe uma área cadastrada com esse nome.");
             }
 
             areaBanco.NomeArea = dto.NomeArea;
 
             _repository.Atualizar(areaBanco);
         }
+
     }
 }

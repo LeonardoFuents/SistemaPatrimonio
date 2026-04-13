@@ -1,9 +1,8 @@
-﻿namespace SistemaPatrimonio.DTOs.AreaDto
+﻿namespace GestaoPatrimonios.DTOs.AreaDto
 {
     public class ListarAreaDto
     {
-        public Guid AreaId { get; set; }
-        public string NomeArea {  get; set; } = string.Empty;
-
+        public Guid AreaID { get; set; }
+        public string NomeArea { get; set; } = string.Empty;
     }
 }
